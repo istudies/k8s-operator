@@ -15,7 +15,7 @@ import (
 	"sync"
 	"time"
 
-	svc "k8s.io/api/core/v1"
+	core "k8s.io/api/core/v1"
 	ing "k8s.io/api/networking/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -126,12 +126,12 @@ func (c *controller) syncService(key string) error {
 		return nil
 	}
 	if err != nil {
-		return err
+		return nil
 	}
-	// check annotations
-	v, ok := service.Annotations["ingress/http"]
 	// get ingress
 	ingress, err := c.ingressLister.Ingresses(namespaceKey).Get(name)
+	// check annotations
+	v, ok := service.Annotations["ingress/http"]
 	if ok && v == "true" && errors.IsNotFound(err) {
 		// create ingress
 		newIng := c.constructIngress(service)
@@ -161,11 +161,11 @@ func (c *controller) handleErr(key string, err error) {
 	runtime.HandleError(err)
 }
 
-func (c *controller) constructIngress(service *svc.Service) *ing.Ingress {
+func (c *controller) constructIngress(service *core.Service) *ing.Ingress {
 	ingress := ing.Ingress{}
 	ingress.Namespace = service.Namespace
 	ingress.Name = service.Name
-	ingress.OwnerReferences = service.GetOwnerReferences()
+	ingress.OwnerReferences = []v1.OwnerReference{*v1.NewControllerRef(service, core.SchemeGroupVersion.WithKind("Service"))}
 	pathType := ing.PathTypePrefix
 	ingressClassName := "nginx"
 	ingress.Spec = ing.IngressSpec{
