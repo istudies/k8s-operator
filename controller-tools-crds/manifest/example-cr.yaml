@@ -1,0 +1,7 @@
+apiVersion: ctl.mycrds.com/v1
+kind: MyCRD
+metadata:
+  name: mycrd-by-ctl
+spec:
+  name: mycrd-by-ctl
+  replicas: 3
