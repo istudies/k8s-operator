@@ -1,0 +1,15 @@
+apiVersion: appcontroller.me/v1
+kind: App
+metadata:
+  name: nginx-app
+spec:
+  deployment:
+    name: nginx-app-deploy
+    image: nginx:latest
+    replicas: 3
+  service:
+    enabled: true
+    name: nginx-app-svc
+  ingress:
+    enabled: true
+    name: nginx-app-ingress
