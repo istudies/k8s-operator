@@ -1,0 +1,7 @@
+apiVersion: mycrds.com/v1
+kind: Foo
+metadata:
+  name: mycrds-foo
+spec:
+  deploymentName: mycrds-foo
+  replicas: 2
