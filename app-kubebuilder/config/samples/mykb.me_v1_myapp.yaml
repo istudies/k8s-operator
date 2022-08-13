@@ -1,0 +1,10 @@
+apiVersion: mykb.me.my.domain/v1
+kind: MyApp
+metadata:
+  name: myapp-sample
+spec:
+  name: nginx-app
+  image: nginx:latest
+  replicas: 3
+  enabledService: true
+  enabledIngress: true
